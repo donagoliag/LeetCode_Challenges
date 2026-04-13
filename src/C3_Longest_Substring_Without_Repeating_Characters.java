@@ -43,5 +43,42 @@ https://leetcode.com/problems/longest-substring-without-repeating-characters/des
 Si max = n (donc on a trouvé) on continue avec la boucle.
 Si max < n, on sort, plus besoin de continuer.*/
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class C3_Longest_Substring_Without_Repeating_Characters {
+
+    public static int lengthOfLongestSubstring(String s) {
+        String souschaine;
+        int max = 1;
+        Map<Character,Integer> compteur = new HashMap<>();
+
+        if (s.length()>1){for (int indicedebut = 0; indicedebut<(s.length()-1); indicedebut++){
+
+            for (int indicedefin = indicedebut+2; indicedefin<= s.length() + 1 ;indicedefin++){
+
+                souschaine = s.substring(indicedebut,indicedefin);
+                for (int i=0; i<souschaine.length();i++){
+                    compteur.merge(souschaine.charAt(i),1,Integer::sum);
+                }
+
+                if (!(Collections.max(compteur.values())>1)){
+                    max = souschaine.length() -1;
+                }
+
+                compteur.clear();
+
+            }
+        }
+            }
+
+        return max;
+
+    }
+
+
+    public static void main(String[] args){
+        System.out.println(lengthOfLongestSubstring("abcabcbb"));
+    }
 }
