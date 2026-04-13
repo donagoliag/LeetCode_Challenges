@@ -52,26 +52,31 @@ public class C3_Longest_Substring_Without_Repeating_Characters {
     public static int lengthOfLongestSubstring(String s) {
         String souschaine;
         int max = 1;
-        Map<Character,Integer> compteur = new HashMap<>();
 
-        if (s.length()>1){for (int indicedebut = 0; indicedebut<(s.length()-1); indicedebut++){
+        if(s==""){
+            max = 0;
+        }else if (s.length()>1){
+            for (int indicedebut = 0; indicedebut<(s.length()-2); indicedebut++){
 
-            for (int indicedefin = indicedebut+2; indicedefin<= s.length() + 1 ;indicedefin++){
+                for (int indicedefin = indicedebut+1; indicedefin<= s.length();indicedefin++){
+                    Map<Character,Integer> compteur = new HashMap<>();
+                    souschaine = s.substring(indicedebut,indicedefin);
+                    for (int i=0; i<souschaine.length();i++){
+                        compteur.merge(souschaine.charAt(i),1,Integer::sum);
+                    }
 
-                souschaine = s.substring(indicedebut,indicedefin);
-                for (int i=0; i<souschaine.length();i++){
-                    compteur.merge(souschaine.charAt(i),1,Integer::sum);
+                    if ((Collections.max(compteur.values())==1) && (max<souschaine.length())){
+                        max = souschaine.length();
+                    } else if ((Collections.max(compteur.values())>1)){
+                        break;
+                    }
+            /*System.out.println(souschaine);
+            System.out.println(compteur);
+            System.out.println(max);*/
+                    compteur.clear();
                 }
-
-                if (!(Collections.max(compteur.values())>1)){
-                    max = souschaine.length() -1;
-                }
-
-                compteur.clear();
-
             }
         }
-            }
 
         return max;
 
@@ -79,6 +84,6 @@ public class C3_Longest_Substring_Without_Repeating_Characters {
 
 
     public static void main(String[] args){
-        System.out.println(lengthOfLongestSubstring("abcabcbb"));
+        System.out.println(lengthOfLongestSubstring(" "));
     }
 }
