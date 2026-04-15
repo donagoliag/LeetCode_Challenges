@@ -51,12 +51,14 @@ public class C3_Longest_Substring_Without_Repeating_Characters {
 
     public static int lengthOfLongestSubstring(String s) {
         String souschaine;
-        int max = 1;
+        int max = 0;
 
-        if(s==""){
+        if(s.isEmpty()){
             max = 0;
-        }else if (s.length()>1){
-            for (int indicedebut = 0; indicedebut<(s.length()-2); indicedebut++){
+        }else if (s.length()==1){
+            return 1;
+        } else {
+            for (int indicedebut = 0; indicedebut<(s.length()-1); indicedebut++){
 
                 for (int indicedefin = indicedebut+1; indicedefin<= s.length();indicedefin++){
                     Map<Character,Integer> compteur = new HashMap<>();
@@ -70,9 +72,9 @@ public class C3_Longest_Substring_Without_Repeating_Characters {
                     } else if ((Collections.max(compteur.values())>1)){
                         break;
                     }
-            /*System.out.println(souschaine);
-            System.out.println(compteur);
-            System.out.println(max);*/
+                    System.out.println(souschaine);
+                    System.out.println(compteur);
+                    System.out.println(max);
                     compteur.clear();
                 }
             }
@@ -84,6 +86,6 @@ public class C3_Longest_Substring_Without_Repeating_Characters {
 
 
     public static void main(String[] args){
-        System.out.println(lengthOfLongestSubstring(" "));
+        System.out.println(lengthOfLongestSubstring("aa"));
     }
 }
