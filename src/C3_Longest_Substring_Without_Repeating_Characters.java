@@ -47,8 +47,75 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static jdk.vm.ci.code.CodeUtil.K;
+
 public class C3_Longest_Substring_Without_Repeating_Characters {
 
+    public static int lengthOfLongestSubstring(String s) {
+        String souschaine;
+        int max = 0;
+        int indicedebut = 0;
+
+        if(s.isEmpty()){
+            max = 0;
+        }else if (s.length()==1){
+            return 1;
+        } else {
+            for (int indicefin = 1; indicefin <= (s.length()); indicefin ++){
+                //System.out.println("ok");
+
+                Map<Character,Integer> compteur = new HashMap<>();
+                souschaine = s.substring(indicedebut,indicefin);
+
+
+                for (int i=0; i<souschaine.length();i++) {
+                    compteur.merge(souschaine.charAt(i),1,Integer::sum);
+                }
+
+                if ((Collections.max(compteur.values())==1) && (max<souschaine.length())){
+                    max = souschaine.length();
+                } else if ((Collections.max(compteur.values())>1)){
+
+                    //recup position doublon
+
+                    //Recherche du doublon
+                    Character charRecherche = null;
+                    for(Map.Entry<Character,Integer> entry : compteur.entrySet()){
+                        if (entry.getValue()>1){
+                            charRecherche = entry.getKey();
+                            break;
+                        }
+                    }
+
+                    int position = indicedebut;
+                    for (int i = indicedebut; i <indicefin;i++){
+                        if ((s.charAt(i)==charRecherche)){
+                            position = i;
+                            break;
+                        }
+                    }
+
+                    indicedebut = position +1;
+                }
+
+                System.out.println(souschaine);
+                System.out.println(compteur);
+                System.out.println(max);
+                compteur.clear();
+            }
+
+        }
+
+        return max;
+
+    }
+
+    public static void main(String[] args){
+        System.out.println(lengthOfLongestSubstring("pwwkew"));
+    }
+}
+
+/*class Solution {
     public static int lengthOfLongestSubstring(String s) {
         String souschaine;
         int max = 0;
@@ -56,36 +123,24 @@ public class C3_Longest_Substring_Without_Repeating_Characters {
         if(s.isEmpty()){
             max = 0;
         }else if (s.length()==1){
-            return 1;
-        } else {
+          return 1;
+        }else {
             for (int indicedebut = 0; indicedebut<(s.length()-1); indicedebut++){
 
-                for (int indicedefin = indicedebut+1; indicedefin<= s.length();indicedefin++){
-                    Map<Character,Integer> compteur = new HashMap<>();
-                    souschaine = s.substring(indicedebut,indicedefin);
-                    for (int i=0; i<souschaine.length();i++){
-                        compteur.merge(souschaine.charAt(i),1,Integer::sum);
-                    }
-
-                    if ((Collections.max(compteur.values())==1) && (max<souschaine.length())){
-                        max = souschaine.length();
-                    } else if ((Collections.max(compteur.values())>1)){
-                        break;
-                    }
-                    System.out.println(souschaine);
-                    System.out.println(compteur);
-                    System.out.println(max);
-                    compteur.clear();
-                }
+        for (int indicedefin = indicedebut+1; indicedefin<= s.length();indicedefin++){
+            Map<Character,Integer> compteur = new HashMap<>();
+            souschaine = s.substring(indicedebut,indicedefin);
+            for (int i=0; i<souschaine.length();i++){
+                compteur.merge(souschaine.charAt(i),1,Integer::sum);
             }
-        }
 
-        return max;
-
-    }
-
-
-    public static void main(String[] args){
-        System.out.println(lengthOfLongestSubstring("aa"));
-    }
-}
+            if ((Collections.max(compteur.values())==1) && (max<souschaine.length())){
+                max = souschaine.length();
+            } else if ((Collections.max(compteur.values())>1)){
+                break;
+            }
+            /*System.out.println(souschaine);
+            System.out.println(compteur);
+            System.out.println(max);*/
+            //compteur.clear();}}}
+        //return max;}} ***/
