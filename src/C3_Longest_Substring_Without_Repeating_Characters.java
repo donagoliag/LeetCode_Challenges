@@ -43,15 +43,13 @@ https://leetcode.com/problems/longest-substring-without-repeating-characters/des
 Si max = n (donc on a trouvé) on continue avec la boucle.
 Si max < n, on sort, plus besoin de continuer.*/
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static jdk.vm.ci.code.CodeUtil.K;
 
 public class C3_Longest_Substring_Without_Repeating_Characters {
 
-    public static int lengthOfLongestSubstring(String s) {
+    /*public static int lengthOfLongestSubstring(String s) {
         String souschaine;
         int max = 0;
         int indicedebut = 0;
@@ -108,11 +106,50 @@ public class C3_Longest_Substring_Without_Repeating_Characters {
 
         return max;
 
-    }
+    }*/
 
-    public static void main(String[] args){
-        System.out.println(lengthOfLongestSubstring("pwwkew"));
-    }
+    public static int lengthOfLongestSubstring(String s) {
+        String souschaine;
+        int max = 0;
+        int gauche = 0;
+
+        Map<Character, Integer> compteur = new LinkedHashMap<>();
+
+        if (s.isEmpty()) {
+            max = 0;
+        } else if (s.length() == 1) {
+            return 1;
+        } else {
+            for (int droite = 0; droite < (s.length()); droite++) {
+                //System.out.println("ok");
+                if (compteur.containsKey(s.charAt(droite))) {
+                    //Recup la position du doublon et suprimer tout jusqu'au doublon avant d'ajouter le nouveau
+                    gauche = compteur.get(s.charAt(droite)) + 1;
+                    Iterator<Map.Entry<Character, Integer>> iterateur = compteur.entrySet().iterator();
+
+                    while (iterateur.hasNext()) {
+                        Map.Entry<Character, Integer> entree = iterateur.next();
+                        if (entree.getValue().equals(gauche)) {
+                            break;
+                        }
+                        iterateur.remove();
+                    }
+                }
+
+                compteur.put(s.charAt(droite), droite);
+                if (max < compteur.size()) {
+                    max = compteur.size();
+                }
+
+            }
+        }
+
+        return max;}
+
+
+        public static void main(String[] args){
+            System.out.println(lengthOfLongestSubstring("pwwkew"));
+        }
 }
 
 /*class Solution {
